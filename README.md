@@ -16,3 +16,8 @@ pip install --no-build-isolation submodules\simple-knn
 
 :: 4. 安装其他辅助库
 pip install plyfile tqdm opencv-python
+-------------------------------------------------------------------------------------
+python train.py -s D:\temp\3DGS\gaussian_splatting\Data\Bottle
+python render.py -m ./output/0f2871a8-7
+cd D:\temp\3DGS\gaussian_splatting\Resources\output\0f2871a8-7\train\ours_30000\renders
+ffmpeg -framerate 30 -i %05d.png -c:v libx264 -pix_fmt yuv420p output.mp4
