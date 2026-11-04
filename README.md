@@ -1,4 +1,3 @@
-使用方法：
 :: 1. 克隆代码并创建环境
 git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive
 cd gaussian-splatting
