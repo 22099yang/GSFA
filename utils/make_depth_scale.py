@@ -48,7 +48,13 @@ def get_scales(key, cameras, images, points3d_ordered, args):
     if valid.sum() > 10 and (invcolmapdepth.max() - invcolmapdepth.min()) > 1e-3:
         maps = maps[valid, :]
         invcolmapdepth = invcolmapdepth[valid]
-        invmonodepth = cv2.remap(invmonodepthmap, maps[..., 0], maps[..., 1], interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)[..., 0]
+        invmonodepth = cv2.remap(
+            invmonodepthmap,
+            np.ascontiguousarray(maps[:, 0:1]),
+            np.ascontiguousarray(maps[:, 1:2]),
+            interpolation=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REPLICATE,
+        ).reshape(-1)
         
         ## Median / dev
         t_colmap = np.median(invcolmapdepth)
