@@ -1,24 +1,10 @@
-﻿import sys, os, numpy as np, cv2
-sys.path.insert(0, "utils")
-from read_write_model import read_model, qvec2rotmat
-
-base = r"D:\temp\3DGS\gaussian_splatting\Data\Bottle"
-cams, imgs, pts = read_model(os.path.join(base, "sparse", "0"), ext=".txt")
-
-P = np.zeros((max(pts.keys()) + 1, 3))
-for k, v in pts.items():
-    P[k] = v.xyz
-
-for im in list(imgs.values())[:3]:
-    m = im.point3D_ids >= 0
-    n = int(m.sum())
-    if n > 0:
-        z = (P[im.point3D_ids[m]] @ qvec2rotmat(im.qvec).T + im.tvec)[:, 2]
-        inv = 1.0 / z
-        rng = (float(inv.min()), float(inv.max()))
-    else:
-        rng = None
-    name = im.name.rsplit(".", 1)[0]
-    d = cv2.imread(os.path.join(base, "dpimage", name + ".png"), cv2.IMREAD_UNCHANGED)
-    info = None if d is None else (d.dtype, d.shape, int(d.min()), int(d.max()))
-    print(im.name, "| 稀疏点数:", n, "| COLMAP逆深度范围:", rng, "| 深度图:", info)
+﻿import json, numpy as np
+p = json.load(open(r"D:\temp\3DGS\gaussian_splatting\Data\Bottle\sparse\0\depth_params.json"))
+items = sorted(p.items(), key=lambda kv: kv[1]["scale"])
+med = np.median([v["scale"] for _, v in items])
+print("median", med)
+print("分位数 10/25/50/75/90:", np.percentile([v["scale"] for _, v in items], [10,25,50,75,90]))
+for k, v in items:
+    r = v["scale"] / med
+    flag = "  <-- 异常" if r > 1.5 or r < 0.67 else ""
+    print(f"{k:30s} scale={v['scale']:8.2f}  ratio={r:5.2f}  offset={v['offset']:+.4f}{flag}")

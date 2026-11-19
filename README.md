@@ -148,7 +148,7 @@ cd D:\temp\3DGS\gaussian_splatting\Resources
 |---|---|
 | 🔹 **无深度训练** | `python train.py -s D:\temp\3DGS\gaussian_splatting\Data\Bottle` |
 | 🔸 **有深度训练** | `python train.py -s D:\temp\3DGS\gaussian_splatting\Data\Bottle -d dpimage` |
-
+| 🔸 **带参数输出** | `python train.py -s D:\temp\3DGS\gaussian_splatting\Data\Bottle -d dpimage --eval` |
 > 有深度训练需要 `depth_params.json`（见 [2.3](#23-可选深度监督准备)）。训练完成后，结果保存在 `Resources/output/<随机ID>/`。
 
 ---
@@ -171,12 +171,19 @@ cd D:\temp\3DGS\gaussian_splatting\Resources\output\xxxxxxxx\train\ours_30000\re
 ffmpeg -framerate 5 -i %05d.png -c:v libx264 -pix_fmt yuv420p -crf 18 output.mp4
 ```
 
+### 4.3 查看渲染效果打分
+```bat
+cd D:\temp\3DGS\gaussian_splatting\Resources
+python metrics.py -m output\xxxxxxxx
+```
+
+
 | 参数 | 说明 |
 |---|---|
 | `-framerate 5` | 帧率，越小播放越慢、越容易看清细节 |
 | `-crf 18` | 画质，数值越小越清晰（推荐 17–23） |
 
-### 4.3 实时查看高斯模型
+### 4.4 实时查看高斯模型
 
 ```bat
 D:\temp\3DGS\gaussian_splatting\Viewers\bin\SIBR_gaussianViewer_app.exe -m D:\temp\3DGS\gaussian_splatting\Resources\output\xxxxxxxx
