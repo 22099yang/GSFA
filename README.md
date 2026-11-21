@@ -126,6 +126,7 @@ ffmpeg -i D:\temp\3DGS\gaussian_splatting\Data\Bottle\VID_20260425_195506.mp4 -q
 **① 生成深度图**（Depth Anything V2）
 
 ```bat
+cd D:\temp\3DGS\gaussian_splatting\Depth-Anything-V2
 python run.py --encoder vitl --img-path D:\temp\3DGS\gaussian_splatting\Data\Bottle\images --outdir D:\temp\3DGS\gaussian_splatting\Data\Bottle\dpimage --pred-only --grayscale
 ```
 
